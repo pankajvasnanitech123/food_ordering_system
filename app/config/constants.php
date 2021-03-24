@@ -9,5 +9,11 @@
             "pending" => 1,
             "completed" => 2,
             "failure" => 3
+        ],
+
+        "user_types" => [
+            "waiter" => 1,
+            "cashier" => 2,
+            "admin" => 2
         ]
     ];
