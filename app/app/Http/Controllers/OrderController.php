@@ -11,7 +11,11 @@ use View;
 class OrderController extends Controller
 {
     public function index(Request $request) {
-        $data = Itemorder::where('staff_id', auth()->user()->id)->where('status', config('constants.item_status.active'))->get();
+        if(auth()->user()->user_role_id == config('constants.user_types.waiter')) {
+            $data = Itemorder::where('staff_id', auth()->user()->id)->get();
+        } else {
+            $data = Itemorder::get();
+        }
 
         return View::make('orders.index')->with(compact('data'));
     }
@@ -141,5 +145,15 @@ class OrderController extends Controller
         $activeItems = Item::where('status', config('constants.item_status.active'))->pluck('name', 'id')->toArray();
 
         return View::make('orders.add-more-orders')->with(compact('nextSectionId', 'activeItems'));
+    }
+
+    public function processOrder(Request $request) {
+        $id = $request->id;
+
+        ItemOrder::where('id', $id)->update(['status' => config('constants.order_status.completed')]);
+
+        session()->flash('success', 'Order processed successfully.');  
+
+        return interpretJsonResponse(true, 200, null, null);
     }
 }

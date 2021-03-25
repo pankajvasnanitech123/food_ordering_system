@@ -15,44 +15,46 @@
                 <div class="float-right">
                     <a href="{{ route('items.create') }}" class="btn btn-primary">Add new item</a>
                 </div>
-                <table class="table">
-                    @php
-                        $waiterRoleId   = config('constants.user_types.waiter');
-                        $cashierRoleId  = config('constants.user_types.cashier');
-                        $adminRoleId  = config('constants.user_types.admin');
-                    @endphp
+                <div class="table-responsive">
+                    <table class="table">
+                        @php
+                            $waiterRoleId   = config('constants.user_types.waiter');
+                            $cashierRoleId  = config('constants.user_types.cashier');
+                            $adminRoleId  = config('constants.user_types.admin');
+                        @endphp
 
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(! $data->isEmpty())
-                            @foreach($data as $item)
-                                <tr>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->stock }}</td>
-                                    <td>{{ show_price($item->price) }}</td>
-                                    <td><button type="button" class="btn btn-success">Active</button></td>
-                                    <td>
-                                        <a data-rel="{{ $item->id }}" href="javascript:void(0);" class="btn btn-success view_item_details"> Show </a> / 
-                                        <a href="{{ route('items.edit', [$item->id]) }}" class="btn btn-primary"> Edit </a> / 
-                                        <a data-rel="{{ $item->id }}" href="javascript:void(0);" class="btn btn-danger delete_item"> Delete </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
+                        <thead class="thead-dark">
                             <tr>
-                                <td class="text-center" colspan="5">No Records Found </td>
+                                <th scope="col">Name</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
                             </tr>
-                        @endif
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @if(! $data->isEmpty())
+                                @foreach($data as $item)
+                                    <tr>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->stock }}</td>
+                                        <td>{{ show_price($item->price) }}</td>
+                                        <td><button type="button" class="btn btn-success">Active</button></td>
+                                        <td>
+                                            <a data-rel="{{ $item->id }}" href="javascript:void(0);" class="btn btn-success view_item_details"> Show </a> / 
+                                            <a href="{{ route('items.edit', [$item->id]) }}" class="btn btn-primary"> Edit </a> / 
+                                            <a data-rel="{{ $item->id }}" href="javascript:void(0);" class="btn btn-danger delete_item"> Delete </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="text-center" colspan="5">No Records Found </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
