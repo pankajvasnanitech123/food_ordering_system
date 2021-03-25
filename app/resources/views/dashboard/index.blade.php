@@ -7,28 +7,39 @@
 @stop
 
 @section('content')
-<div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Food Ordering System</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}">Logout</a>
-        </li>
-        </ul>
+    <div class="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto">
+        @include('elements.navigation')
+        <div class="card card0 border-0">
+            <div class="col-md-12">
+                <table class="table">
+                    @php
+                        $waiterRoleId   = config('constants.user_types.waiter');
+                        $cashierRoleId  = config('constants.user_types.cashier');
+                        $adminRoleId  = config('constants.user_types.admin');
+                    @endphp
+
+                    <thead class="thead-dark">
+                        <tr>
+                            @if(auth()->user()->user_role_id == $cashierRoleId || auth()->user()->user_role_id == $adminRoleId)
+                                <th scope="col">Total Active Orders</th>
+                                <th scope="col">Total Completed Orders</th>
+                            @else
+                                <th scope="col">Total Active Orders</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @if(auth()->user()->user_role_id == $cashierRoleId || auth()->user()->user_role_id == $adminRoleId)
+                                <td>{{ $activeOrders }}</td>
+                                <td>{{ $completedOrders }}</td>
+                            @else
+                                <td> {{ $activeOrders }} </td>
+                            @endif
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    </nav>
-</div>
 @stop

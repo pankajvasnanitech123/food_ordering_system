@@ -6,9 +6,8 @@
         ],
 
         "order_status" => [
-            "pending" => 1,
-            "completed" => 2,
-            "failure" => 3
+            "active" => 1,
+            "completed" => 2
         ],
 
         "user_types" => [
