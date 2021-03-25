@@ -64,4 +64,15 @@
         return date($format, strtotime($dt));
     }
 
+    /**
+     * Function to show price in proper format
+     * 
+     * @param $data as the value
+     * 
+     * @return formatted price 
+     */
+    function show_price($data) {
+        return number_format($data);
+    }
+
 ?>

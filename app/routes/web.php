@@ -18,4 +18,6 @@ Route::post('/login-validate', 'App\Http\Controllers\Auth\LoginController@valida
 Route::group(['middleware' => ['app.authenticate']], function() {
     Route::get('dashboard', 'App\Http\Controllers\DashboardController@index')->name('dashboard');
     Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+    Route::get('items', 'App\Http\Controllers\ItemController@index')->name('items');
+    Route::get('orders', 'App\Http\Controllers\OrderController@index')->name('orders');
 });
