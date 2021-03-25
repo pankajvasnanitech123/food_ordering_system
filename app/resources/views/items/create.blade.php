@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Login')
+@section('title', 'Create Item')
 
 @section('sidebar')
     @parent

@@ -8,16 +8,37 @@ use View;
 
 class ItemController extends Controller
 {
+    /**
+     * Function to get the items
+     * 
+     * @param $request as input data
+     * 
+     * @return items page
+     */
     public function index(Request $request) {
         $data = Item::where('status', config('constants.item_status.active'))->get();
 
         return View::make('items.index')->with(compact('data'));
     }
 
+    /**
+     * Function to create the item
+     * 
+     * @param $request as input data
+     * 
+     * @return items create page
+     */
     public function create(Request $request) {
         return View::make('items.create');
     }
 
+    /**
+     * Function to save the item
+     * 
+     * @param $request as input data
+     * 
+     * @return items page
+     */
     public function store(Request $request) {
         $data = new Item();
         $data->name = $request->name;
@@ -28,12 +49,26 @@ class ItemController extends Controller
         return redirect()->route('items')->with('success', 'Item added successfully.');
     }
 
+    /**
+     * Function to edit the item
+     * 
+     * @param $id as item id
+     * 
+     * @return items page
+     */
     public function edit($id) {
         $data = Item::where('id', $id)->first();
 
         return View::make('items.edit')->with(compact('data'));
     }
 
+    /**
+     * Function to update the item
+     * 
+     * @param $id as item id
+     * 
+     * @return items page
+     */
     public function update($id) {
         $data           = Item::where('id', $id)->first();
         $data->name     = request()->name;
@@ -44,6 +79,13 @@ class ItemController extends Controller
         return redirect()->route('items')->with('success', 'Item updated successfully.');
     }
 
+    /**
+     * Function to show the item details
+     * 
+     * @param $request as input data
+     * 
+     * @return items view page
+     */
     public function show(Request $request) {
         $id = $request->id;
 
@@ -67,6 +109,13 @@ class ItemController extends Controller
         return $dataHtml;
     }
 
+    /**
+     * Function to delete the item
+     * 
+     * @param $request as input data
+     * 
+     * @return response object
+     */
     public function delete(Request $request) {
         $id = $request->id;
 

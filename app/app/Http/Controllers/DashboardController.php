@@ -8,6 +8,13 @@ use App\Models\ItemOrder;
 
 class DashboardController extends Controller
 {
+    /**
+     * Function to show the dashboard
+     * 
+     * @param $request as input data
+     * 
+     * @return dashboard page
+     */
     public function index(Request $request) {
         $waiterRoleId   = config('constants.user_types.waiter');
         $cashierRoleId  = config('constants.user_types.cashier');

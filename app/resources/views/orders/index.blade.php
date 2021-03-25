@@ -11,18 +11,20 @@
         @include('elements.navigation')
         <div class="card card0 border-0">
             <div class="col-md-12">
+                @php
+                    $waiterRoleId   = config('constants.user_types.waiter');
+                    $cashierRoleId  = config('constants.user_types.cashier');
+                    $adminRoleId  = config('constants.user_types.admin');
+                @endphp
                 @include('elements.message')
                 <div class="float-right">
                     <a href="{{ route('orders.create') }}" class="btn btn-primary">Add new order</a>
+                    @if(auth()->user()->user_role_id == $waiterRoleId)
+                        <a href="{{ route('orders.print_activity_report') }}" class="btn btn-primary">Print Activity Report</a>
+                    @endif
                 </div>
                 <div class="table-responsive">
                     <table class="table">
-                        @php
-                            $waiterRoleId   = config('constants.user_types.waiter');
-                            $cashierRoleId  = config('constants.user_types.cashier');
-                            $adminRoleId  = config('constants.user_types.admin');
-                        @endphp
-
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Order Number</th>

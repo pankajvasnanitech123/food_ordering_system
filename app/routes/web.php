@@ -31,6 +31,7 @@ Route::group(['middleware' => ['app.authenticate']], function() {
     // Item Orders route
     Route::get('orders', 'App\Http\Controllers\OrderController@index')->name('orders');
     Route::get('orders/add-more-order', 'App\Http\Controllers\OrderController@addMoreOrders')->name('orders.add_more_order');
+    Route::get('orders/print-activity-report', 'App\Http\Controllers\OrderController@printActivityReport')->name('orders.print_activity_report');
     Route::get('orders/process', 'App\Http\Controllers\OrderController@processOrder')->name('orders.process');
     Route::get('orders/create', 'App\Http\Controllers\OrderController@create')->name('orders.create');
     Route::post('orders/store', 'App\Http\Controllers\OrderController@store')->name('orders.store');

@@ -6,10 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\ItemOrder;
 use App\Models\Item;
 use App\Models\ItemOrderDetail;
-use View;
+use View, PDF;
 
 class OrderController extends Controller
 {
+    /**
+     * Function to get the orders
+     * 
+     * @param $request as input data
+     * 
+     * @return orders page
+     */
     public function index(Request $request) {
         if(auth()->user()->user_role_id == config('constants.user_types.waiter')) {
             $data = Itemorder::where('staff_id', auth()->user()->id)->get();
@@ -20,12 +27,26 @@ class OrderController extends Controller
         return View::make('orders.index')->with(compact('data'));
     }
 
+    /**
+     * Function to create the order
+     * 
+     * @param $request as input data
+     * 
+     * @return orders create page
+     */
     public function create(Request $request) {
         $activeItems = Item::where('status', config('constants.item_status.active'))->pluck('name', 'id')->toArray();
 
         return View::make('orders.create')->with(compact('activeItems'));
     }
 
+    /**
+     * Function to save the order
+     * 
+     * @param $request as input data
+     * 
+     * @return orders page
+     */
     public function store(Request $request) {
         $data = new ItemOrder();
         $data->table_number = $request->table_number;
@@ -52,6 +73,13 @@ class OrderController extends Controller
         return redirect()->route('orders')->with('success', 'Order added successfully.');
     }
 
+    /**
+     * Function to edit the order
+     * 
+     * @param $id as order id
+     * 
+     * @return orders edit page
+     */
     public function edit($id) {
         $activeItems = Item::where('status', config('constants.item_status.active'))->pluck('name', 'id')->toArray();
 
@@ -62,6 +90,13 @@ class OrderController extends Controller
         return View::make('orders.edit')->with(compact('data', 'orderDetails', 'activeItems'));
     }
 
+    /**
+     * Function to update the order
+     * 
+     * @param $id as order id
+     * 
+     * @return orders page
+     */
     public function update($id) {
         $data = ItemOrder::where('id', $id)->first();
         $data->user_name = request()->user_name;
@@ -88,6 +123,13 @@ class OrderController extends Controller
         return redirect()->route('orders')->with('success', 'Order updated successfully.');
     }
 
+    /**
+     * Function to show the order details
+     * 
+     * @param $request as input data
+     * 
+     * @return orders view page
+     */
     public function show(Request $request) {
         $id = $request->id;
 
@@ -128,6 +170,13 @@ class OrderController extends Controller
         return $dataHtml;
     }
 
+    /**
+     * Function to delete the order
+     * 
+     * @param $request as input data
+     * 
+     * @return orders page
+     */
     public function delete(Request $request) {
         $id = $request->id;
 
@@ -140,6 +189,13 @@ class OrderController extends Controller
         return interpretJsonResponse(true, 200, null, null);
     }
 
+    /**
+     * Function to add more orders for add more functionality
+     * 
+     * @param $request as input data
+     * 
+     * @return add more orders page
+     */
     public function addMoreOrders(Request $request) {
         $nextSectionId = $request->next_section_id;
         $activeItems = Item::where('status', config('constants.item_status.active'))->pluck('name', 'id')->toArray();
@@ -147,6 +203,13 @@ class OrderController extends Controller
         return View::make('orders.add-more-orders')->with(compact('nextSectionId', 'activeItems'));
     }
 
+    /**
+     * Function to process the order by the cashier
+     * 
+     * @param $request as input data
+     * 
+     * @return response object
+     */
     public function processOrder(Request $request) {
         $id = $request->id;
 
@@ -155,5 +218,20 @@ class OrderController extends Controller
         session()->flash('success', 'Order processed successfully.');  
 
         return interpretJsonResponse(true, 200, null, null);
+    }
+
+    /**
+     * Function to print the activity report
+     * 
+     * @param $request as input data
+     * 
+     * @return activity report pdf page
+     */
+    public function printActivityReport(Request $request) {
+        $data['data'] = ItemOrder::where('staff_id', auth()->user()->id)->get();
+
+        $pdf = PDF::loadView('orders.activity_report', $data); 
+
+        return $pdf->download('activity_report'.time().'.pdf');
     }
 }
