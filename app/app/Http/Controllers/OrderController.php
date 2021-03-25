@@ -11,7 +11,7 @@ use View;
 class OrderController extends Controller
 {
     public function index(Request $request) {
-        $data = Itemorder::where('status', config('constants.item_status.active'))->get();
+        $data = Itemorder::where('staff_id', auth()->user()->id)->where('status', config('constants.item_status.active'))->get();
 
         return View::make('orders.index')->with(compact('data'));
     }
@@ -24,7 +24,9 @@ class OrderController extends Controller
 
     public function store(Request $request) {
         $data = new ItemOrder();
+        $data->table_number = $request->table_number;
         $data->user_name = $request->user_name;
+        $data->staff_id = auth()->user()->id;
         $data->order_number = generate_order_number();
         
         $data->save();
@@ -59,6 +61,7 @@ class OrderController extends Controller
     public function update($id) {
         $data = ItemOrder::where('id', $id)->first();
         $data->user_name = request()->user_name;
+        $data->table_number = $request->table_number;
         
         $data->save();
         $orderId = $data->id;
@@ -84,21 +87,24 @@ class OrderController extends Controller
     public function show(Request $request) {
         $id = $request->id;
 
-        $data = ItemOrder::where('id', $id)->first();
+        $data = ItemOrderDetail::where('order_id', $id)->first();
 
         $dataHtml = '';
         $dataHtml .= '<table class="table">';
         $dataHtml .= '<thead class="thead-dark">';
         $dataHtml .= '<tr>
-            <th scope="col">Name</th>
-            <th scope="col">Stock</th>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
             <th scope="col">Price</th>
-            <th scope="col">Status</th>
+            <th scope="col">Final Price</th>
         </tr></thead>';
-        $dataHtml .= '<tbody"><tr>';
-        $dataHtml .= '<td>'.$data->name.'</td>';
-        $dataHtml .= '<td>'.$data->stock.'</td>';
-        $dataHtml .= '<td>'.show_price($data->price).'</td>';
+        $dataHtml .= '<tbody">';
+        foreach($data as $val) {
+            $dataHtml .= '<tr">';
+            $dataHtml .= '<td>'.$data->name.'</td>';
+            $dataHtml .= '<td>'.$data->stock.'</td>';
+            $dataHtml .= '<td>'.show_price($data->price).'</td>';
+        }
         $dataHtml .= '<td><button type="button" class="btn btn-success">Active</button></td></tbody></table>';
 
         return $dataHtml;
@@ -108,6 +114,8 @@ class OrderController extends Controller
         $id = $request->id;
 
         ItemOrder::where('id', $id)->delete();
+
+        ItemOrderDetail::where('order_id', $id)->delete();
 
         session()->flash('success', 'Order deleted successfully.');  
 

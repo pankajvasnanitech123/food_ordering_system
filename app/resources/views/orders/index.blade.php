@@ -25,6 +25,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">Order Number</th>
+                            <th scope="col">Table Number</th>
                             <th scope="col">Customer Name</th>
                             <th scope="col">Price</th>
                             <th scope="col">Status</th>
@@ -36,6 +37,7 @@
                             @foreach($data as $order)
                                 <tr>
                                     <td>{{ $order->order_number }}</td>
+                                    <td>{{ $order->table_number }}</td>
                                     <td>{{ $order->user_name }}</td>
                                     <td>{{ show_price($order->total_price) }}</td>
                                     <td>

@@ -25,6 +25,7 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'user_name' => 'required',
+            'table_number' => 'required|numeric',
             'order_details.*.item_id' => 'required',
             'order_details.*.quantity' => 'required|numeric',
             'order_details.*.price' => 'required|regex:/^\d+(\.\d{1,2})?$/'

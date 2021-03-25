@@ -22,6 +22,12 @@
                             </label> 
                             {!! Form::text('user_name', $data->user_name, ['class' => 'mb-4', 'placeholder' => 'Enter Customer Name']) !!}
                         </div>
+                        <div class="row px-3"> 
+                            <label class="mb-1">
+                                <h6 class="mb-0 text-sm">Table Number</h6>
+                            </label> 
+                            {!! Form::text('table_number', $data->table_number, ['class' => 'mb-4', 'placeholder' => 'Enter Table Number']) !!}
+                        </div>
                         <div class="add_more_orders_section">
                             @foreach($orderDetails as $key=>$val)
                                 <div id="order_section_{{ $key }}" class="more_order_section">
