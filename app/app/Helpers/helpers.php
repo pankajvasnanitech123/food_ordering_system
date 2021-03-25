@@ -1,4 +1,6 @@
 <?php
+    use App\Models\ItemOrder;
+
     /**
      * Function to interpret the success response
      * 
@@ -73,6 +75,32 @@
      */
     function show_price($data) {
         return number_format($data, 2);
+    }
+
+    /**
+     * Function to generate the order number
+     * 
+     * @param null
+     * 
+     * @return order number 
+     */
+    function generate_order_number() {
+        $alreadyOrderExist = ItemOrder::select('order_number')->orderBy('created_at', 'DESC')->limit(1)->first();
+
+        if(empty($alreadyOrderExist)) {
+            $orderNumber = 'ABC'.date('jnY').'-001';
+
+            return $orderNumber;
+        } else {
+
+            $orderNumber = $alreadyOrderExist->order_number;
+
+            $orderNumberSplit = explode("-", $orderNumber);
+            $orderSequenceNumber = intval($orderNumberSplit[1]) + 1;
+            $newOrderNumber = 'ABC'.date('jnY').'-00'.$orderSequenceNumber;
+
+            return $newOrderNumber;
+        }
     }
 
 ?>
