@@ -61,7 +61,7 @@ class OrderController extends Controller
     public function update($id) {
         $data = ItemOrder::where('id', $id)->first();
         $data->user_name = request()->user_name;
-        $data->table_number = $request->table_number;
+        $data->table_number = request()->table_number;
         
         $data->save();
         $orderId = $data->id;
@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function show(Request $request) {
         $id = $request->id;
 
-        $data = ItemOrderDetail::where('order_id', $id)->first();
+        $data = ItemOrderDetail::where('order_id', $id)->get();
 
         $dataHtml = '';
         $dataHtml .= '<table class="table">';
@@ -99,13 +99,27 @@ class OrderController extends Controller
             <th scope="col">Final Price</th>
         </tr></thead>';
         $dataHtml .= '<tbody">';
+
+        $totalPrice = 0;
+
         foreach($data as $val) {
             $dataHtml .= '<tr">';
-            $dataHtml .= '<td>'.$data->name.'</td>';
-            $dataHtml .= '<td>'.$data->stock.'</td>';
-            $dataHtml .= '<td>'.show_price($data->price).'</td>';
+            $dataHtml .= '<td>'.$val->item_name.'</td>';
+            $dataHtml .= '<td>'.$val->quantity.'</td>';
+            $dataHtml .= '<td>'.show_price($val->price).'</td>';
+            $dataHtml .= '<td>'.show_price($val->final_price).'</td>';
+            $dataHtml .= '</tr>';
+
+            $totalPrice += $val->final_price;
         }
-        $dataHtml .= '<td><button type="button" class="btn btn-success">Active</button></td></tbody></table>';
+        $dataHtml .= '</tbody>';
+
+        $dataHtml .= '<thead class="thead-dark"><tr>
+            <th scope="col" colspan="3">Grand Total</th>
+            <th scope="col">'.show_price($totalPrice).'</th>
+        </tr></thead>';
+
+        $dataHtml .= '</table>';
 
         return $dataHtml;
     }
