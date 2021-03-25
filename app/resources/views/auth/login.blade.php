@@ -25,6 +25,7 @@
                                 <h6 class="mb-0 text-sm">Email Address</h6>
                             </label> 
                             {!! Form::text('email', old('email'), ['class' => 'mb-4', 'placeholder' => 'Enter a valid email address']) !!}
+                        </div>
                         <div class="row px-3"> 
                             <label class="mb-1">
                                 <h6 class="mb-0 text-sm">Password</h6>

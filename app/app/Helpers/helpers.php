@@ -72,7 +72,7 @@
      * @return formatted price 
      */
     function show_price($data) {
-        return number_format($data);
+        return number_format($data, 2);
     }
 
 ?>

@@ -134,3 +134,10 @@ a {
         margin: 0px 15px
     }
 }
+
+.help-block {
+    color: red;
+    font-weight: bold;
+    position: relative;
+    bottom: 25px;
+}
