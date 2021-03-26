@@ -32,9 +32,10 @@
                             </label>
                             {!! Form::password('password', ['placeholder' => 'Enter password']) !!}
                         </div>
+                        <div class="row px-3"> 
+                            <button type="button" class="btn btn-primary text-center validate_login">Login</button>
+                        </div>
                     </div>
-                    <br/>
-                    <div class="row mb-3 px-3"> <button type="button" class="btn btn-primary text-center validate_login">Login</button> </div>
                 {!! Form::close() !!}
             </div>
         </div>
