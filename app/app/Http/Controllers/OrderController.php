@@ -19,7 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request) {
         if(auth()->user()->user_role_id == config('constants.user_types.waiter')) {
-            $data = Itemorder::where('staff_id', auth()->user()->id)->get();
+            $data = Itemorder::where('staff_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
         } else {
             $data = Itemorder::get();
         }
@@ -228,7 +228,7 @@ class OrderController extends Controller
      * @return activity report pdf page
      */
     public function printActivityReport(Request $request) {
-        $data['data'] = ItemOrder::where('staff_id', auth()->user()->id)->get();
+        $data['data'] = ItemOrder::where('staff_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
         $pdf = PDF::loadView('orders.activity_report', $data); 
 

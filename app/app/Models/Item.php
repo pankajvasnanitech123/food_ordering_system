@@ -9,4 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
     use HasFactory, SoftDeletes;
+    
+    public function getStatusAttribute($value) {
+        return 'Active';
+    }
 }

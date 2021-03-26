@@ -15,7 +15,7 @@ class MenuController extends Controller
      * @return food menu data
      */
     public function index(Request $request) {
-        $data = Item::where('status', config('constants.item_status.active'))->get();
+        $data = Item::where('status', config('constants.item_status.active'))->orderBy('created_at', 'desc')->get();
 
         return interpretJsonResponse(true, 200, $data, null);
     }
